@@ -6,6 +6,9 @@ Wraps `convert_hf_to_gguf.py` (unquantized base GGUF) and a statically
 linked `llama-quantize` (final quantized GGUF) into a single command,
 then deletes the intermediate file on success.
 
+Available as a standalone Rust executable (`hf2gguf.rs`, zero external
+crates) and a Python script (`hf2gguf.py`) with identical behavior.
+
 ## Requirements
 
 - A llama.cpp checkout built with static linking:
@@ -21,16 +24,24 @@ then deletes the intermediate file on success.
   pip3 install --break-system-packages -r requirements/requirements-convert_hf_to_gguf.txt
   ```
 
+## Building the Rust executable
+
+Only `rustc` is needed (e.g. `apt-get install rustc`) - no cargo, no crates:
+
+```sh
+rustc -O hf2gguf.rs -o hf2gguf
+```
+
 ## Install
 
 ```sh
-cp hf2gguf /path/to/llama.cpp/hf2gguf
+cp hf2gguf /path/to/llama.cpp/hf2gguf      # or hf2gguf.py
 ln -s /path/to/llama.cpp/hf2gguf /usr/local/bin/hf2gguf
 ```
 
-The script locates llama.cpp via `$LLAMA_CPP_DIR`, or the directory
-containing the script itself when placed at the repo root (symlinks
-are resolved, so a PATH symlink works).
+The llama.cpp checkout is located via `$LLAMA_CPP_DIR`, or the directory
+containing the executable/script itself when placed at the repo root
+(symlinks are resolved, so a PATH symlink works).
 
 ## Usage
 
